@@ -1,4 +1,4 @@
-## Repo for all of my homework at FRI-LJ
+## Repo for all of my java homework at FRI-LJ
 
 #### I have a intellj external tool to automagicaly preform tests from one button on the currently focused file:
 Program: `/bin/bash`
