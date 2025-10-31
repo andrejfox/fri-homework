@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class DN02 {
+public class DN02_63250335 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -19,7 +19,7 @@ public class DN02 {
     /// Gets the length of the path per given keyboard, size, and an array of key preses.
     public static int getPathLength(int type, int size, int[] MovesArr) {
         return switch (type) {
-            case 1 -> pathLengthRavnovrstnica(size, MovesArr);
+            case 1 -> pathLengthRavnovrstnica(MovesArr);
             case 2 -> pathLengthKvadratnica(size, MovesArr);
             case 3 -> pathLengthPiramidnica(size, MovesArr);
             case 4 -> pathLengthSpiralnica(size, MovesArr);
@@ -28,7 +28,7 @@ public class DN02 {
     }
 
     /// Gets the length of the path for the linear keyboard.
-    private static int pathLengthRavnovrstnica(int size, int[] MovesArr) {
+    private static int pathLengthRavnovrstnica(int[] MovesArr) {
         int sum = 0;
         for (int i = 0; i < MovesArr.length - 1; i++) {
             sum += Math.abs(MovesArr[i] - MovesArr[i + 1]);
@@ -74,22 +74,18 @@ public class DN02 {
             int key1 = MovesArr[i];
             int key2 = MovesArr[i + 1];
 
-            // IDK it's 2 am and it works
-            int sqrt1 = (int) Math.sqrt(key1);
-            int sqrt2 = (int) Math.sqrt(key2);
-            int ring1 = (sqrt1 % 2 == 0) && (sqrt1 != 0) ? sqrt1 - 1 : sqrt1;
-            int ring2 = (sqrt2 % 2 == 0) && (sqrt2 != 0) ? sqrt2 - 1 : sqrt2;
+            int sqrtRingCorner1 = getSqrtOfRingCorner(key1);
+            int sqrtRingCorner2 = getSqrtOfRingCorner(key2);
 
-            int[] xyRing1 = getPositionInRing(ring1, key1);
-            int[] xyRing2 = getPositionInRing(ring2, key2);
+            int[] xyRing1 = getPositionInRing(sqrtRingCorner1, key1);
+            int[] xyRing2 = getPositionInRing(sqrtRingCorner2, key2);
 
-            // when num was 0 it didn't behave, so I had to check for the edge case
-            int offset1 = ring1 != 0 ? size / 2 - ring1 / 2 : size / 2 + 1;
-            int offset2 = ring1 != 0 ? size / 2 - ring2 / 2 : size / 2 + 1;
+            int offset1 = getOffset(sqrtRingCorner1, size);
+            int offset2 = getOffset(sqrtRingCorner2, size);
 
             int x1 = offset1 + xyRing1[0];
-            int x2 = offset2 + xyRing2[0];
             int y1 = offset1 + xyRing1[1];
+            int x2 = offset2 + xyRing2[0];
             int y2 = offset2 + xyRing2[1];
 
             int deltaHorizontal = Math.abs(x1 - x2);
@@ -100,13 +96,33 @@ public class DN02 {
         return sum;
     }
 
+    /// Returns the sqrt of the upper-left corner in the ring the key belongs to. <br>
+    /// Example: for number <code>5</code>, this function returns <code>1</code> <br>
+    /// because <code>sqrt(1) == 1</code>.
+    /// <pre>
+    /// +-------+
+    /// | 1 2 3 |
+    /// | 8 0 4 |
+    /// | 7 6 5 |
+    /// +-------+
+    /// </pre>
+    public static int getSqrtOfRingCorner(int key) {
+        int sqrt = (int) Math.sqrt(key);
+        return (sqrt % 2 == 0) && (sqrt != 0) ? sqrt - 1 : sqrt;
+    }
+
+    /// Return the offset of the current ring to the max ring dictated by <code>size</code> <br>
+    public static int getOffset(int sqrtRingCorner, int size) {
+        return sqrtRingCorner != 0 ? size / 2 - sqrtRingCorner / 2 : size / 2 + 1;
+    }
+
     /// Gets the x and y positions in the ring
-    private static int[] getPositionInRing(int ring, int num) {
+    public static int[] getPositionInRing(int sqrtRingCorner, int num) {
         int x = 0;
         int y = 0;
-        int side = ring + 1;
+        int side = sqrtRingCorner + 1;
 
-        int c0 = (int) Math.pow(ring, 2);
+        int c0 = (int) Math.pow(sqrtRingCorner, 2);
         int c1 = c0 + side;
         int c2 = c1 + side;
         int c3 = c2 + side;
