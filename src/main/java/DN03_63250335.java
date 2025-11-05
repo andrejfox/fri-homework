@@ -12,7 +12,7 @@ public class DN03_63250335 {
 
         boolean heighIsDevisable = height % maxTileSide == 0;
         if (heighIsDevisable && width % maxTileSide == 0) {
-            System.out.println((height / maxTileSide) * (width / maxTileSide));
+            System.out.println((long) (height / maxTileSide) * (width / maxTileSide));
         } else if (heighIsDevisable) {
             System.out.println(getTileCount1(height, width, maxTileSide, 0));
         } else {
