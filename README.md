@@ -1,4 +1,5 @@
 ### Repo for all of my java homework at FRI-LJ
+
 ---
 #### I have set a intellj external tool to automagicaly preform automated tests in one button click:
 Program: `/bin/bash`
