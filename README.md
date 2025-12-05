@@ -8,4 +8,5 @@ Argiments: `-c "rm -rf results/* && ./tj.exe $FileName$ tests/$FileNameWithoutEx
 
 Work directory: `$FileDir$`
 
+😛😛😛😛😛😛😛😛😛😛😛😛😛😛😛😛😛😛😛
 ---
